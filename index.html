@@ -1,51 +1,730 @@
 
-const CACHE = "docs-roulette-pattern-v2";
-const FILES = ["./", "./index.html", "./sw.js"];
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0b1424">
+<title>Doc's Roulette War Room</title>
+<style>
+:root {
+  --bg:#0b1424;
+  --panel:#17243a;
+  --dark:#101c2f;
+  --border:#34465e;
+  --text:#f4f7fc;
+  --muted:#aebdd0;
+  --green:#35c779;
+}
+* {box-sizing:border-box}
+body {
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font:15px system-ui,Arial,sans-serif;
+}
+main {max-width:1250px;margin:auto;padding:15px}
+h1 {font-size:clamp(23px,4vw,34px);margin:0}
+h2 {font-size:19px;margin:0 0 12px}
+p {color:var(--muted);line-height:1.5}
+header {margin-bottom:16px}
+.layout {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+.panel {
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:13px;
+  padding:16px;
+  margin-bottom:14px;
+}
+.wheel {
+  display:grid;
+  grid-template-columns:repeat(6,1fr);
+  gap:7px;
+}
+.num {
+  border:1px solid #ffffff30;
+  border-radius:8px;
+  color:white;
+  font-size:20px;
+  font-weight:800;
+  padding:13px 3px;
+  cursor:pointer;
+}
+.red {background:#b52b3b}
+.black {background:#252a34}
+.green {background:#11794e}
+.num:active {transform:scale(.95)}
+.actions {
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:12px;
+}
+.action {
+  background:#283b57;
+  color:white;
+  border:1px solid #526681;
+  border-radius:8px;
+  padding:10px 12px;
+  cursor:pointer;
+}
+.chips {display:flex;flex-wrap:wrap;gap:6px}
+.chip {
+  display:inline-flex;
+  justify-content:center;
+  align-items:center;
+  min-width:34px;
+  height:34px;
+  padding:3px;
+  border-radius:7px;
+  color:white;
+  font-weight:800;
+}
+.bigpick {
+  text-align:center;
+  background:var(--dark);
+  border:1px solid #496383;
+  border-radius:13px;
+  padding:16px;
+  margin-bottom:12px;
+}
+.bigpick .number {
+  font-size:58px;
+  font-weight:900;
+  color:var(--green);
+}
+.small {font-size:12px;color:var(--muted)}
+.grid2 {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:9px;
+}
+.metric {
+  background:var(--dark);
+  border-radius:9px;
+  padding:12px;
+}
+.metric span {
+  display:block;
+  color:var(--muted);
+  font-size:12px;
+}
+.metric strong {font-size:18px}
+.row {
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  padding:9px 0;
+  border-bottom:1px solid #ffffff17;
+}
+.row span {color:var(--muted)}
+.rule {
+  background:var(--dark);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:12px;
+  margin:9px 0;
+}
+.rule strong {color:var(--green)}
+.rule p {margin:5px 0}
+.status {
+  padding:10px;
+  border-radius:8px;
+  background:#142d36;
+  color:#b5f1d1;
+  margin:10px 0;
+}
+textarea {
+  width:100%;
+  min-height:90px;
+  background:var(--dark);
+  color:white;
+  border:1px solid #526681;
+  border-radius:8px;
+  padding:11px;
+  font:inherit;
+}
+table {width:100%;border-collapse:collapse;font-size:13px}
+th,td {
+  padding:8px 5px;
+  text-align:left;
+  border-bottom:1px solid #ffffff1b;
+}
+th {color:var(--muted)}
+.scroll {overflow:auto;max-height:320px}
+@media(max-width:850px) {
+  .layout {grid-template-columns:1fr}
+  main {padding:10px}
+  .panel {padding:13px}
+}
+</style>
+</head>
+<body>
+<main>
+<header>
+<h1>🎯 DOC'S ROULETTE WAR ROOM</h1>
+<p>Offline Pattern Detective | American Roulette | 38 Outcomes</p>
+<div class="status" id="connection">Loading...</div>
+</header>
 
-self.addEventListener("install", event => {
-  event.waitUntil(
-    caches.open(CACHE)
-      .then(cache => cache.addAll(FILES))
-      .then(() => self.skipWaiting())
-  );
-});
+<div class="layout">
+<div>
+<section class="panel">
+<h2>Enter Latest Spin</h2>
+<p>Tap the number that just landed. The next prediction updates automatically.</p>
+<div class="wheel" id="wheel"></div>
+<div class="actions">
+<button class="action" id="undo">Undo Last Spin</button>
+<button class="action" id="export">Export Backup</button>
+<button class="action" id="clear">Clear Session</button>
+</div>
+</section>
 
-self.addEventListener("activate", event => {
-  event.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(
-        keys.filter(key => key !== CACHE)
-          .map(key => caches.delete(key))
-      )
-    ).then(() => self.clients.claim())
-  );
-});
+<section class="panel">
+<h2>Spin History <span id="count"></span></h2>
+<div class="chips" id="history"></div>
+</section>
 
-self.addEventListener("fetch", event => {
-  if (event.request.method !== "GET") return;
-  if (new URL(event.request.url).origin !== self.location.origin) return;
+<section class="panel">
+<h2>Mathematical Pattern Detective</h2>
+<div id="patterns"></div>
+</section>
 
-  event.respondWith(
-    fetch(event.request)
-      .then(response => {
-        if (response.ok) {
-          const copy = response.clone();
-          event.waitUntil(
-            caches.open(CACHE)
-              .then(cache => cache.put(event.request, copy))
-          );
-        }
-        return response;
-      })
-      .catch(async () => {
-        const cached = await caches.match(event.request);
-        if (cached) return cached;
+<section class="panel">
+<h2>Digit Family Intelligence</h2>
+<div id="families"></div>
+</section>
 
-        if (event.request.mode === "navigate") {
-          return caches.match("./index.html");
-        }
+<section class="panel">
+<h2>Practice With Saved Numbers</h2>
+<p>Enter historical spins oldest first, separated by commas or spaces.</p>
+<textarea id="bulk" placeholder="2, 3, 6, 16, 18, 25, 29"></textarea>
+<div class="actions">
+<button class="action" id="import">Analyze Practice Numbers</button>
+</div>
+</section>
+</div>
 
-        return Response.error();
-      })
-  );
-});
+<div>
+<section class="panel">
+<h2>Automatic Next-Spin Analysis</h2>
+<div class="bigpick">
+<div class="small">TOP MATHEMATICAL CANDIDATE</div>
+<div class="number" id="topNumber">—</div>
+<div id="topReason" class="small">Waiting for numbers</div>
+</div>
+<h3>Other Number Candidates</h3>
+<div id="candidates"></div>
+<p class="small">These are mathematical pattern candidates, not guaranteed outcomes or calibrated probabilities.</p>
+</section>
+
+<section class="panel">
+<h2>Category Predictions</h2>
+<div class="grid2">
+<div class="metric"><span>High / Low</span><strong id="highlow">—</strong></div>
+<div class="metric"><span>Red / Black</span><strong id="color">—</strong></div>
+<div class="metric"><span>Dozen</span><strong id="dozen">—</strong></div>
+<div class="metric"><span>Table Row</span><strong id="tableRow">—</strong></div>
+<div class="metric"><span>Zero / Double Zero</span><strong id="zero">—</strong></div>
+<div class="metric"><span>Wheel Family</span><strong id="sector">—</strong></div>
+</div>
+<p class="small">Categories describe the top-ranked number candidate.</p>
+</section>
+
+<section class="panel">
+<h2>Pattern Persistence Monitor</h2>
+<div id="persistence"></div>
+</section>
+
+<section class="panel">
+<h2>Prediction Accuracy</h2>
+<div class="grid2">
+<div class="metric"><span>Graded Predictions</span><strong id="trials">0</strong></div>
+<div class="metric"><span>Exact Hits</span><strong id="hits">0</strong></div>
+<div class="metric"><span>Exact Hit Rate</span><strong id="hitRate">—</strong></div>
+<div class="metric"><span>Top-5 Hit Rate</span><strong id="top5Rate">—</strong></div>
+</div>
+<p class="small">Fair-wheel baselines: exact 2.63%, top five 13.16%.</p>
+<div class="status" id="evaluation">Waiting for predictions.</div>
+</section>
+
+<section class="panel">
+<h2>Prediction Receipts</h2>
+<div class="scroll">
+<table>
+<thead>
+<tr><th>Spin</th><th>Pick</th><th>Actual</th><th>Result</th></tr>
+</thead>
+<tbody id="receipts"></tbody>
+</table>
+</div>
+</section>
+
+<section class="panel">
+<h2>Research Mode</h2>
+<p>The engine identifies mathematical relationships, including interrupted patterns. A pattern fitting past spins does not establish that it predicts future spins. Fair roulette outcomes are independent.</p>
+</section>
+</div>
+</div>
+</main>
+
+<script>
+"use strict";
+
+const NUMS=["0","00",...Array.from({length:36},(_,i)=>String(i+1))];
+
+const WHEEL=[
+"0","28","9","26","30","11","7","20",
+"32","17","5","22","34","15","3","24",
+"36","13","1","00","27","10","25","29",
+"12","8","19","31","18","6","21","33",
+"16","4","23","35","14","2"
+];
+
+const RED=new Set([
+1,3,5,7,9,12,14,16,18,
+19,21,23,25,27,30,32,34,36
+].map(String));
+
+const KEY="docs-roulette-pattern-v3";
+const $=id=>document.getElementById(id);
+
+let spins=[];
+let receipts=[];
+
+function valid(n){return NUMS.includes(String(n))}
+function isZero(n){return n==="0"||n==="00"}
+function colorOf(n){
+ return isZero(n)?"green":RED.has(n)?"red":"black";
+}
+function chip(n){
+ return `<span class="chip ${colorOf(n)}">${n}</span>`;
+}
+
+function save(){
+ try{
+  localStorage.setItem(KEY,JSON.stringify({spins,receipts}));
+  return true;
+ }catch(e){
+  $("connection").textContent="Storage error. Export a backup.";
+  return false;
+ }
+}
+
+function load(){
+ try{
+  const d=JSON.parse(localStorage.getItem(KEY)||"{}");
+  if(Array.isArray(d.spins)&&d.spins.every(valid)){
+   spins=d.spins.map(String);
+  }
+  if(Array.isArray(d.receipts)&&d.receipts.length===spins.length){
+   receipts=d.receipts;
+  }else{
+   rebuild();
+  }
+ }catch(e){console.warn(e)}
+}
+
+function digitFamilies(n){
+ if(isZero(n))return new Set();
+ const [a,b]=n.padStart(2,"0").split("").map(Number);
+ return new Set([a+b,Math.abs(a-b)]);
+}
+
+function familyMembers(f){
+ return NUMS.filter(n=>digitFamilies(n).has(f));
+}
+
+function distance(a,b){
+ const x=WHEEL.indexOf(a);
+ const y=WHEEL.indexOf(b);
+ const d=Math.abs(x-y);
+ return Math.min(d,38-d);
+}
+
+function wheelFamily(n){
+ const i=WHEEL.indexOf(n);
+ return Array.from({length:6},(_,j)=>WHEEL[(i+j-2+38)%38]);
+}
+
+function operations(a,b){
+ if(isZero(a)||isZero(b))return [];
+ const x=Number(a),y=Number(b);
+ const arr=[
+  {name:"Addition",n:x+y,formula:`${x} + ${y}`},
+  {name:"Subtraction",n:Math.abs(x-y),formula:`|${x} - ${y}|`},
+  {name:"Forward Subtraction",n:y-x,formula:`${y} - ${x}`},
+  {name:"Multiplication",n:x*y,formula:`${x} × ${y}`}
+ ];
+ if(y!==0)arr.push({
+  name:"Division",n:x/y,formula:`${x} ÷ ${y}`
+ });
+ if(x!==0)arr.push({
+  name:"Reverse Division",n:y/x,formula:`${y} ÷ ${x}`
+ });
+ return arr.filter(r=>
+  Number.isInteger(r.n)&&r.n>=1&&r.n<=36
+ );
+}
+
+function triple(a,b,c){
+ return operations(a,b).filter(r=>String(r.n)===c);
+}
+
+function scan(history){
+ if(history.length<2)return null;
+
+ const a=history.at(-2),b=history.at(-1);
+ const scores=new Map(NUMS.map(n=>[n,0]));
+ const reasons=new Map(NUMS.map(n=>[n,[]]));
+ const counts={};
+
+ function add(n,weight,reason){
+  if(!valid(n)||weight<=0)return;
+  scores.set(n,scores.get(n)+weight);
+  reasons.get(n).push(reason);
+ }
+
+ // Addition, subtraction, multiplication, division
+ for(const r of operations(a,b)){
+  add(String(r.n),1,r.formula+" = "+r.n);
+ }
+
+ // Recent mathematical triples
+ const recent=history.slice(-24);
+ for(let i=2;i<recent.length;i++){
+  const found=triple(recent[i-2],recent[i-1],recent[i]);
+  for(const name of new Set(found.map(r=>r.name))){
+   counts[name]=(counts[name]||0)+1;
+  }
+ }
+
+ // Reward rules previously observed
+ for(const r of operations(a,b)){
+  const support=counts[r.name]||0;
+  if(support){
+   add(String(r.n),Math.min(3,support)*0.65,
+    r.name+" matched "+support+" earlier triple(s)");
+  }
+ }
+
+ // Constant step
+ if(!isZero(a)&&!isZero(b)){
+  const step=Number(b)-Number(a);
+  const next=Number(b)+step;
+  if(next>=1&&next<=36){
+   add(String(next),1.2,"Continue step "+step);
+  }
+
+  // Alternating step
+  if(history.length>=4){
+   const x=history.at(-4),y=history.at(-3);
+   if(!isZero(x)&&!isZero(y)){
+    const oldStep=Number(y)-Number(x);
+    const alt=Number(b)+oldStep;
+    if(alt>=1&&alt<=36){
+     add(String(alt),1.1,"Alternating step "+oldStep);
+    }
+   }
+  }
+ }
+
+ // Digit-family transitions
+ const pairs=history.slice(-50);
+ const currentFamilies=digitFamilies(b);
+
+ for(let i=1;i<pairs.length;i++){
+  const from=digitFamilies(pairs[i-1]);
+  const to=digitFamilies(pairs[i]);
+
+  if([...from].some(f=>currentFamilies.has(f))){
+   for(const f of to){
+    for(const n of familyMembers(f)){
+     add(n,0.12,"Family transition toward "+f);
+    }
+   }
+  }
+ }
+
+ // Historical transitions
+ for(let i=1;i<history.length;i++){
+  if(history[i-1]===b){
+   add(history[i],0.75,"Previously followed "+b);
+  }
+ }
+
+ // Physical wheel neighbors
+ for(const n of NUMS){
+  if(distance(n,b)<=2){
+   add(n,0.16,"Wheel neighbor of "+b);
+  }
+ }
+
+ // Preserve recurring rules after interruptions
+ for(const [name,count] of Object.entries(counts)){
+  if(count<2)continue;
+  for(const r of operations(a,b).filter(r=>r.name===name)){
+   add(String(r.n),Math.min(1.2,count*0.18),
+    "Persistent "+name+" rule");
+  }
+ }
+
+ const ranking=[...scores.entries()]
+  .map(([n,score])=>({n,score,reasons:reasons.get(n)}))
+  .filter(r=>r.score>0)
+  .sort((x,y)=>y.score-x.score||
+   NUMS.indexOf(x.n)-NUMS.indexOf(y.n));
+
+ return {ranking,counts};
+}
+
+function predict(history){
+ const result=scan(history);
+ return result?result.ranking.slice(0,5).map(r=>r.n):null;
+}
+
+function rebuild(){
+ receipts=[];
+ for(let i=0;i<spins.length;i++){
+  receipts.push({
+   before:predict(spins.slice(0,i)),
+   actual:spins[i]
+  });
+ }
+}
+
+function addSpin(n,refresh=true){
+ if(!valid(n))return;
+ const before=predict(spins);
+ spins.push(n);
+ receipts.push({before,actual:n});
+ save();
+ if(refresh)render();
+}
+
+function undo(){
+ if(!spins.length)return;
+ spins.pop();
+ receipts.pop();
+ save();
+ render();
+}
+
+function clearAll(){
+ if(!confirm("Delete all saved spins and receipts?"))return;
+ spins=[];
+ receipts=[];
+ save();
+ render();
+}
+
+function importSpins(){
+ const raw=$("bulk").value.trim();
+ if(!raw)return;
+ const items=raw.split(/[\s,;]+/).filter(Boolean);
+ if(items.some(n=>!valid(n))){
+  alert("Use only 0, 00, or numbers 1 through 36.");
+  return;
+ }
+ for(const n of items)addSpin(n,false);
+ $("bulk").value="";
+ render();
+}
+
+function exportBackup(){
+ const data={
+  exported:new Date().toISOString(),
+  spins,receipts
+ };
+ const blob=new Blob([JSON.stringify(data,null,2)],
+  {type:"application/json"});
+ const url=URL.createObjectURL(blob);
+ const a=document.createElement("a");
+ a.href=url;
+ a.download="docs-roulette-backup.json";
+ a.click();
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+
+function categories(n){
+ const ids=["highlow","color","dozen","tableRow","zero","sector"];
+ if(!n){
+  ids.forEach(id=>$(id).textContent="—");
+  return;
+ }
+ const x=Number(n);
+ $("highlow").textContent=isZero(n)?"Zero":x<=18?"1–18":"19–36";
+ $("color").textContent=colorOf(n).toUpperCase();
+ $("dozen").textContent=isZero(n)?"Zero":
+  x<=12?"1st":x<=24?"2nd":"3rd";
+ $("tableRow").textContent=isZero(n)?"Zero":
+  x%3===0?"Top":x%3===2?"Middle":"Bottom";
+ $("zero").textContent=isZero(n)?n:"Neither";
+ $("sector").textContent=wheelFamily(n).join(", ");
+}
+
+function renderFamilies(){
+ const counts=new Map();
+ for(const n of spins.slice(-12)){
+  for(const f of digitFamilies(n)){
+   counts.set(f,(counts.get(f)||0)+1);
+  }
+ }
+ const ranked=[...counts.entries()]
+  .sort((a,b)=>b[1]-a[1]).slice(0,8);
+ $("families").innerHTML=ranked.length?
+  ranked.map(([f,c])=>
+   `<div class="row"><span>Family ${f}</span><b>${c} appearances</b></div>`
+  ).join("")+
+  '<p class="small">One number can belong to multiple families.</p>':
+  "<p>Waiting for numbers.</p>";
+}
+
+function renderPatterns(){
+ const recent=spins.slice(-7);
+ const found=[];
+ for(let i=2;i<recent.length;i++){
+  const matches=triple(recent[i-2],recent[i-1],recent[i]);
+  if(matches.length){
+   found.push({
+    sequence:recent.slice(i-2,i+1).join(" → "),
+    matches
+   });
+  }
+ }
+ $("patterns").innerHTML=found.length?
+  found.reverse().map(t=>`
+   <div class="rule">
+    <strong>${t.sequence}</strong>
+    <p>${t.matches.map(r=>r.name+": "+r.formula).join(" | ")}</p>
+   </div>
+  `).join(""):
+  '<p>No exact mathematical triple in the latest seven spins.</p>';
+}
+
+function renderPersistence(result){
+ if(!result){
+  $("persistence").textContent="Waiting for numbers.";
+  return;
+ }
+ const rules=Object.entries(result.counts)
+  .sort((a,b)=>b[1]-a[1]).slice(0,6);
+ $("persistence").innerHTML=rules.length?
+  rules.map(([name,count])=>`
+   <div class="row"><span>${name}</span>
+   <b>${count} matches</b></div>
+  `).join("")+
+  '<p class="small">Historical matches remain counted after interruptions. They do not prove a future edge.</p>':
+  "<p>No recurring mathematical rule identified.</p>";
+}
+
+function renderAccuracy(){
+ const graded=receipts.filter(r=>r.before&&r.before.length);
+ const trials=graded.length;
+ const hits=graded.filter(r=>r.before[0]===r.actual).length;
+ const five=graded.filter(r=>r.before.includes(r.actual)).length;
+
+ $("trials").textContent=trials;
+ $("hits").textContent=hits;
+ $("hitRate").textContent=trials?
+  (hits/trials*100).toFixed(1)+"%":"—";
+ $("top5Rate").textContent=trials?
+  (five/trials*100).toFixed(1)+"%":"—";
+
+ $("evaluation").textContent=trials<100?
+  "Collecting predictions: "+trials+" graded spins.":
+  "Exact hits: "+hits+
+  ". Random expectation: "+(trials/38).toFixed(1)+
+  ". Larger independent samples are needed.";
+
+ $("receipts").innerHTML=receipts.slice(-100).reverse()
+  .map((r,i)=>{
+   const result=!r.before?"Warmup":
+    r.before[0]===r.actual?"Exact":
+    r.before.includes(r.actual)?"Top 5":"Miss";
+   return `<tr>
+    <td>${receipts.length-i}</td>
+    <td>${r.before?.[0]||"—"}</td>
+    <td>${chip(r.actual)}</td>
+    <td>${result}</td>
+   </tr>`;
+  }).join("");
+}
+
+function render(){
+ $("count").textContent="("+spins.length+")";
+ $("history").innerHTML=spins.length?
+  spins.slice(-80).reverse().map(chip).join(""):
+  "<p>No spins entered.</p>";
+
+ const result=scan(spins);
+ const ranking=result?.ranking||[];
+ const top=ranking[0];
+
+ $("topNumber").textContent=top?.n||"—";
+ $("topReason").textContent=top?
+  top.reasons.slice(0,3).join(" • "):
+  "Enter at least two spins.";
+
+ $("candidates").innerHTML=ranking.slice(0,5)
+  .map((r,i)=>`
+   <div class="row">
+    <span>${i+1}. ${r.n}</span>
+    <b>${r.score.toFixed(2)}</b>
+   </div>
+   <p class="small">${r.reasons.slice(0,2).join("; ")}</p>
+  `).join("")||"<p>Waiting for data.</p>";
+
+ categories(top?.n);
+ renderFamilies();
+ renderPatterns();
+ renderPersistence(result);
+ renderAccuracy();
+}
+
+function buildWheel(){
+ for(const n of NUMS){
+  const b=document.createElement("button");
+  b.className="num "+colorOf(n);
+  b.textContent=n;
+  b.onclick=()=>addSpin(n);
+  $("wheel").appendChild(b);
+ }
+}
+
+function updateConnection(){
+ $("connection").textContent=navigator.onLine?
+  "ONLINE — Local pattern analysis enabled":
+  "OFFLINE — Local pattern analysis enabled";
+}
+
+$("undo").onclick=undo;
+$("clear").onclick=clearAll;
+$("export").onclick=exportBackup;
+$("import").onclick=importSpins;
+
+window.addEventListener("online",updateConnection);
+window.addEventListener("offline",updateConnection);
+
+if("serviceWorker" in navigator){
+ window.addEventListener("load",async()=>{
+  try{
+   await navigator.serviceWorker.register("./sw.js");
+   await navigator.serviceWorker.ready;
+  }catch(e){
+   console.warn("Offline service worker unavailable",e);
+  }
+ });
+}
+
+buildWheel();
+load();
+updateConnection();
+render();
+</script>
+</body>
+</html>
