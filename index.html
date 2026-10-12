@@ -4,164 +4,231 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#0b1424">
-<title>Doc's Roulette War Room — Family Intelligence</title>
+<meta name="theme-color" content="#081321">
+<title>Doc's Roulette War Room | Fast Loop Intelligence</title>
 <style>
-:root{--bg:#0b1424;--panel:#18263c;--inner:#0f1b2d;--border:#344860;--text:#f3f6fb;--muted:#aebcd0;--accent:#34ce86}
+:root{
+ --bg:#081321;--panel:#14243a;--inside:#0c192b;
+ --line:#334c69;--text:#f4f7fc;--muted:#a9bdd3;
+ --green:#36df92;--red:#ba2b43;--gold:#f3c46d
+}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font:15px system-ui,Arial,sans-serif}
-main{max-width:1250px;margin:auto;padding:15px}
-h1{font-size:clamp(23px,4vw,32px);margin:0}
-h2{font-size:19px;margin:0 0 12px}
+body{margin:0;background:var(--bg);color:var(--text);
+ font:15px system-ui,Arial,sans-serif}
+main{max-width:1260px;margin:auto;padding:14px}
+h1{font-size:clamp(22px,4vw,31px);margin:0 0 6px}
+h2{font-size:18px;margin:0 0 12px}
 h3{font-size:15px;margin:12px 0 8px}
-p{color:var(--muted);line-height:1.5}
-.layout{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.panel{background:var(--panel);border:1px solid var(--border);border-radius:13px;padding:16px;margin:12px 0}
-.wheel{display:grid;grid-template-columns:repeat(6,1fr);gap:7px}
-.num{border:1px solid #ffffff30;border-radius:7px;color:white;font-size:19px;font-weight:800;padding:12px 3px;cursor:pointer}
-.red{background:#b52b3b}
-.black{background:#252a34}
-.green{background:#11794e}
-.num:active{transform:scale(.96)}
-.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-.action{background:#293d58;color:white;border:1px solid #526681;border-radius:8px;padding:10px 12px;cursor:pointer}
-.action:disabled{opacity:.45}
-.chips{display:flex;flex-wrap:wrap;gap:6px}
-.chip{display:inline-flex;align-items:center;justify-content:center;min-width:34px;height:34px;border-radius:7px;padding:3px;color:white;font-weight:800}
-.big{background:var(--inner);border:1px solid #496383;border-radius:12px;text-align:center;padding:17px}
-.big strong{font-size:54px;color:var(--accent)}
-.small{font-size:12px;color:var(--muted)}
+p{color:var(--muted);line-height:1.45;margin:8px 0}
+small,.small{font-size:12px;color:var(--muted)}
+.layout{display:grid;grid-template-columns:1.05fr 1fr;gap:13px}
+.panel{background:var(--panel);border:1px solid var(--line);
+ border-radius:13px;padding:14px;margin:12px 0}
+.hero{background:#102b2c;border:1px solid #267455;
+ border-radius:13px;padding:15px;margin:12px 0}
+.hero .main{font-size:clamp(26px,5vw,42px);
+ font-weight:900;color:var(--green)}
+.hero .sub{color:#d2f5e2;font-size:14px}
+.row{display:flex;justify-content:space-between;align-items:center;
+ gap:9px;padding:9px 0;border-bottom:1px solid #ffffff18}
+.row:last-child{border-bottom:0}
 .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
-.metric{background:var(--inner);border-radius:8px;padding:12px}
-.metric span{display:block;color:var(--muted);font-size:12px}
-.metric strong{font-size:18px}
-.row{display:flex;justify-content:space-between;align-items:center;gap:12px;border-bottom:1px solid #ffffff1a;padding:9px 0}
-.row span{color:var(--muted)}
-.rule{background:var(--inner);border:1px solid var(--border);border-radius:9px;padding:12px;margin:8px 0}
-.rule strong{color:var(--accent)}
-.status{padding:10px;background:#183334;color:#baf4d6;border-radius:8px;margin:10px 0}
-.muted{color:var(--muted)}
-textarea{width:100%;min-height:90px;background:var(--inner);color:white;border:1px solid #526681;border-radius:8px;padding:11px;font:inherit}
-table{border-collapse:collapse;width:100%;font-size:13px}
-td,th{text-align:left;border-bottom:1px solid #ffffff1b;padding:8px 5px}
+.metric{background:var(--inside);border-radius:9px;padding:11px}
+.metric label{display:block;font-size:12px;color:var(--muted)}
+.metric strong{font-size:20px}
+.buttons{display:grid;grid-template-columns:repeat(6,1fr);gap:7px}
+.num{min-height:49px;border:1px solid #ffffff36;border-radius:8px;
+ font-size:20px;font-weight:900;color:white;cursor:pointer;
+ touch-action:manipulation}
+.num:active{transform:scale(.96)}
+.red{background:#ad293f}.black{background:#262d3b}
+.green{background:#127747}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.action{background:#294261;color:white;border:1px solid #587393;
+ padding:10px 12px;border-radius:8px;cursor:pointer;font-weight:700}
+.action:disabled{opacity:.4}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{display:inline-flex;align-items:center;justify-content:center;
+ min-width:33px;min-height:33px;border-radius:7px;
+ padding:4px 6px;color:white;font-weight:800}
+.tag{display:inline-block;padding:5px 9px;border-radius:6px;
+ background:#274564;color:#e4f3ff;font-weight:800;margin:3px}
+.tag.hit{background:#145d40;color:#b8fbd5}
+.rule{background:var(--inside);border:1px solid var(--line);
+ border-radius:9px;padding:11px;margin:8px 0}
+.rule strong{color:var(--green)}
+.good{color:var(--green)}
+.gold{color:var(--gold)}
+.pass{font-weight:900;color:var(--gold);font-size:23px}
+textarea{width:100%;min-height:92px;background:var(--inside);
+ color:white;border:1px solid var(--line);border-radius:8px;
+ padding:11px;font:inherit}
+table{border-collapse:collapse;width:100%;font-size:12px}
+td,th{padding:8px 5px;border-bottom:1px solid #ffffff19;text-align:left}
 th{color:var(--muted)}
-.scroll{max-height:310px;overflow:auto}
-.family{display:inline-block;background:#28405d;border-radius:6px;padding:5px 8px;margin:3px;font-weight:700}
-.highlight{color:var(--accent)}
-@media(max-width:850px){.layout{grid-template-columns:1fr}main{padding:10px}.panel{padding:13px}}
+.scroll{max-height:300px;overflow:auto}
+.notice{background:#183b36;color:#baf4d9;padding:9px;
+ border-radius:8px;margin:10px 0}
+@media(max-width:850px){
+ .layout{grid-template-columns:1fr}
+ main{padding:9px}
+ .panel{padding:12px}
+}
 </style>
 </head>
 <body>
 <main>
 <header>
 <h1>🎯 DOC'S ROULETTE WAR ROOM</h1>
-<p>Family Sequence Intelligence • 38 American Roulette Outcomes • Offline Pattern Research</p>
-<div class="status" id="connection">Loading...</div>
+<p>Fast Loop Intelligence • Family First • One-Tap Analysis</p>
+<div class="notice" id="status">Loading saved history...</div>
 </header>
+
+<div class="hero">
+<div class="small">LATEST FAMILY INTELLIGENCE</div>
+<div class="main" id="headline">READY</div>
+<div class="sub" id="headlineDetail">
+Enter your next spin to begin.
+</div>
+<div class="row">
+<span>Pattern recognition</span>
+<strong id="speed">—</strong>
+</div>
+<div class="row">
+<span>Betting decision</span>
+<span class="pass">PASS</span>
+</div>
+<small>
+Pattern recognition is not proof of predictive advantage.
+No betting edge has been established.
+</small>
+</div>
+
 <div class="layout">
 <div>
 <section class="panel">
 <h2>Enter Latest Spin</h2>
-<p>Tap each result. The family scanner and next-number candidates update automatically.</p>
-<div class="wheel" id="wheel"></div>
+<p>One tap records the result and updates all detectors.</p>
+<div class="buttons" id="numberButtons"></div>
 <div class="actions">
-<button class="action" id="undo">Undo Last Spin</button>
+<button class="action" id="undo">Undo Last</button>
 <button class="action" id="export">Export Backup</button>
-<button class="action" id="clear">Clear Session</button>
+<button class="action" id="clear">Clear Spins</button>
 </div>
 </section>
 
 <section class="panel">
-<h2>Spin History <span id="count"></span></h2>
-<p class="small">Newest first. Your previous history is imported automatically when available.</p>
+<h2>Latest Spins <span id="spinCount"></span></h2>
+<p class="small">Newest first. Analysis always uses oldest-to-newest order.</p>
 <div class="chips" id="history"></div>
 </section>
 
 <section class="panel">
-<h2>Family Sequence Detective</h2>
-<div id="familyPatterns"></div>
+<h2>Live Family Streams</h2>
+<div id="streams"></div>
 </section>
 
 <section class="panel">
-<h2>Family Transitions</h2>
-<div id="transitions"></div>
+<h2>Double Loop Detector</h2>
+<p>ABAB: two families alternating twice.</p>
+<div id="doubleLoops"></div>
 </section>
 
 <section class="panel">
-<h2>Mathematical Pattern Detective</h2>
-<div id="mathPatterns"></div>
+<h2>Return Loop Detector</h2>
+<p>ABBA: the sequence returns to its opening family.</p>
+<div id="returnLoops"></div>
 </section>
 
 <section class="panel">
-<h2>Practice With Saved Numbers</h2>
-<p>Paste oldest to newest, separated by commas or spaces. Use 00 for double zero.</p>
-<textarea id="bulk" placeholder="30, 30, 36, 27, 29"></textarea>
+<h2>Other Family Sequences</h2>
+<div id="otherLoops"></div>
+</section>
+
+<section class="panel">
+<h2>Family Frequency Monitor</h2>
+<div id="frequency"></div>
+</section>
+
+<section class="panel">
+<h2>Practice / Import Spins</h2>
+<p>
+Paste spins oldest first. You can import a whole day's results.
+Separate days using the End Session button.
+</p>
+<textarea id="bulk" placeholder="15, 16, 28, 34"></textarea>
 <div class="actions">
-<button class="action" id="import">Analyze Practice Numbers</button>
+<button class="action" id="import">Import Spins</button>
+<button class="action" id="endSession">End Session</button>
 </div>
 </section>
 </div>
 
 <div>
 <section class="panel">
-<h2>Automatic Next-Spin Analysis</h2>
-<div class="big">
-<div class="small">TOP PATTERN CONTINUATION</div>
-<strong id="topNumber">—</strong>
-<div class="small" id="topReason">Waiting for numbers</div>
-</div>
-<h3>Other Number Candidates</h3>
+<h2>Next Family Research</h2>
+<div id="familyResearch"></div>
+<p class="small">
+These are observed family transitions, not winning probabilities.
+Overlapping families can appear in the same spin.
+</p>
+</section>
+
+<section class="panel">
+<h2>Next-Number Research Candidates</h2>
 <div id="candidates"></div>
-<p class="small">These are heuristic mathematical continuations, not calibrated winning probabilities.</p>
+<p class="small">
+Candidate rankings are exploratory. They are not qualified bets.
+</p>
 </section>
 
 <section class="panel">
-<h2>Next Family Candidates</h2>
-<div id="familyCandidates"></div>
+<h2>Pattern Breaks and Returns</h2>
+<div id="returns"></div>
 </section>
 
 <section class="panel">
-<h2>Category Display</h2>
+<h2>Arithmetic Intelligence</h2>
+<div id="arithmetic"></div>
+</section>
+
+<section class="panel">
+<h2>Latest Number Categories</h2>
 <div class="grid">
-<div class="metric"><span>High / Low</span><strong id="highlow">—</strong></div>
-<div class="metric"><span>Red / Black</span><strong id="color">—</strong></div>
-<div class="metric"><span>Dozen</span><strong id="dozen">—</strong></div>
-<div class="metric"><span>Table Row</span><strong id="tableRow">—</strong></div>
-<div class="metric"><span>Zero / 00</span><strong id="zero">—</strong></div>
-<div class="metric"><span>Six-Pocket Wheel Family</span><strong id="sector">—</strong></div>
+<div class="metric"><label>High / Low</label><strong id="highLow">—</strong></div>
+<div class="metric"><label>Color</label><strong id="latestColor">—</strong></div>
+<div class="metric"><label>Dozen</label><strong id="dozen">—</strong></div>
+<div class="metric"><label>Table Row</label><strong id="tableRow">—</strong></div>
+<div class="metric"><label>Wheel Neighbors</label><strong id="neighbors">—</strong></div>
+<div class="metric"><label>Latest Spin</label><strong id="latest">—</strong></div>
 </div>
-<p class="small">Categories describe the top-ranked number, not independent category forecasts.</p>
-</section>
-
-<section class="panel">
-<h2>Pattern Persistence Monitor</h2>
-<div id="persistence"></div>
-</section>
-
-<section class="panel">
-<h2>Prediction Accuracy</h2>
-<div class="grid">
-<div class="metric"><span>Graded Predictions</span><strong id="trials">0</strong></div>
-<div class="metric"><span>Exact Hits</span><strong id="hits">0</strong></div>
-<div class="metric"><span>Exact Hit Rate</span><strong id="hitRate">—</strong></div>
-<div class="metric"><span>Top-5 Hit Rate</span><strong id="top5Rate">—</strong></div>
-</div>
-<p class="small">Fair-wheel baselines: exact 2.63%; top five 13.16%. Historical imported spins are backtests, not independent live validation.</p>
 </section>
 
 <section class="panel">
 <h2>Prediction Receipts</h2>
+<div class="grid">
+<div class="metric"><label>Graded</label><strong id="graded">0</strong></div>
+<div class="metric"><label>Exact Hits</label><strong id="exactHits">0</strong></div>
+<div class="metric"><label>Exact Rate</label><strong id="exactRate">—</strong></div>
+<div class="metric"><label>Top 5 Rate</label><strong id="topFiveRate">—</strong></div>
+</div>
+<p class="small">
+Fair-wheel baseline: 1/38 exact, 5/38 top-five.
+Practice and historical receipts are not independent live validation.
+</p>
 <div class="scroll">
 <table>
-<thead><tr><th>Spin</th><th>Pick</th><th>Actual</th><th>Result</th></tr></thead>
+<thead>
+<tr><th>Actual</th><th>Top Pick</th><th>Result</th><th>Source</th></tr>
+</thead>
 <tbody id="receipts"></tbody>
 </table>
 </div>
 </section>
 
 <section class="panel">
-<h2>Research Rule</h2>
-<p>Family labels may overlap, so the detector tests competing assignments. A visible sequence can occur by chance. Fair roulette spins are independent; no detected pattern proves a predictive edge.</p>
+<h2>Saved Sessions</h2>
+<div id="sessions"></div>
 </section>
 </div>
 </div>
@@ -170,510 +237,968 @@ th{color:var(--muted)}
 <script>
 "use strict";
 
-const NUMS=["0","00",...Array.from({length:36},(_,i)=>String(i+1))];
-const WHEEL=["0","28","9","26","30","11","7","20","32","17","5","22","34","15","3","24","36","13","1","00","27","10","25","29","12","8","19","31","18","6","21","33","16","4","23","35","14","2"];
-const RED=new Set([1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36].map(String));
-const KEY="docs-roulette-family-v4";
-const OLD=["docs-roulette-pattern-v3","docs-roulette-pattern-v2","docs-roulette-war-room-v1"];
+const NUMBERS=["0","00",...Array.from({length:36},(_,i)=>String(i+1))];
+
+const RED=new Set(
+ [1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36].map(String)
+);
+
+const WHEEL=[
+ "0","28","9","26","30","11","7","20","32","17",
+ "5","22","34","15","3","24","36","13","1","00",
+ "27","10","25","29","12","8","19","31","18","6",
+ "21","33","16","4","23","35","14","2"
+];
+
+const KEY="docs-roulette-fast-loops-v5";
+const PREVIOUS=[
+ "docs-roulette-family-v4",
+ "docs-roulette-pattern-v3",
+ "docs-roulette-pattern-v2",
+ "docs-roulette-war-room-v1"
+];
+
 const $=id=>document.getElementById(id);
 
-let spins=[],receipts=[],saveFailed=false;
+let spins=[];
+let sessions=[];
+let receipts=[];
+let currentStart=0;
+let storageError=false;
 
-const valid=n=>NUMS.includes(String(n));
-const zero=n=>n==="0"||n==="00";
-const color=n=>zero(n)?"green":RED.has(n)?"red":"black";
-const chip=n=>`<span class="chip ${color(n)}">${n}</span>`;
+const isValid=n=>NUMBERS.includes(String(n));
+const isZero=n=>n==="0"||n==="00";
+const color=n=>isZero(n)?"green":RED.has(n)?"red":"black";
 
-// Read both digits independently.
-// Addition and subtraction are retained as separate family views.
-function familyViews(n){
- if(zero(n))return null;
- const [a,b]=String(n).padStart(2,"0").split("").map(Number);
- return {addition:a+b,subtraction:Math.abs(a-b)};
-}
-function families(n){
- const v=familyViews(n);
- return v?[...new Set([v.addition,v.subtraction])]:[];
-}
-function members(f){
- return NUMS.filter(n=>families(n).includes(f));
-}
-function wheelDistance(a,b){
- const d=Math.abs(WHEEL.indexOf(a)-WHEEL.indexOf(b));
- return Math.min(d,38-d);
-}
-function wheelFamily(n){
- const i=WHEEL.indexOf(n);
- return Array.from({length:6},(_,j)=>WHEEL[(i+j-2+38)%38]);
+function chip(n){
+ return `<span class="chip ${color(n)}">${n}</span>`;
 }
 
-function operations(a,b){
- if(zero(a)||zero(b))return [];
- const x=Number(a),y=Number(b);
- const out=[
-  {name:"Addition",n:x+y,expression:`${x}+${y}`},
-  {name:"Subtraction",n:Math.abs(x-y),expression:`|${x}-${y}|`},
-  {name:"Multiplication",n:x*y,expression:`${x}×${y}`}
- ];
- if(y)out.push({name:"Division",n:x/y,expression:`${x}÷${y}`});
- if(x)out.push({name:"Reverse division",n:y/x,expression:`${y}÷${x}`});
- return out.filter(o=>Number.isInteger(o.n)&&o.n>=1&&o.n<=36);
-}
-function mathMatches(a,b,c){
- return operations(a,b).filter(o=>String(o.n)===c);
+function escapeHTML(value){
+ return String(value)
+  .replace(/&/g,"&amp;")
+  .replace(/</g,"&lt;")
+  .replace(/>/g,"&gt;")
+  .replace(/"/g,"&quot;");
 }
 
-// Pattern templates work with either addition or subtraction labels.
-function familyPatterns(history){
- const found=[];
- const templates=[
-  {name:"AABB",size:4,groups:[0,0,1,1]},
-  {name:"ABAB",size:4,groups:[0,1,0,1]},
-  {name:"AAB",size:3,groups:[0,0,1]},
-  {name:"ABB",size:3,groups:[0,1,1]},
-  {name:"AAA",size:3,groups:[0,0,0]},
-  {name:"ABCABC",size:6,groups:[0,1,2,0,1,2]}
- ];
- for(const t of templates){
-  if(history.length<t.size)continue;
-  const window=history.slice(-t.size);
-  const labels=window.map(families);
-  const choices=[...new Set(labels.flat())];
-  if(choices.length<new Set(t.groups).size)continue;
-  const distinct=[...new Set(t.groups)];
-  const assignments=[];
-  function visit(index,used,assignment){
-   if(index===distinct.length){
-    const selected=t.groups.map(g=>assignment[g]);
-    if(selected.every((f,i)=>labels[i].includes(f)))assignments.push(selected);
-    return;
+// DOC'S FAMILY RULES
+//
+// 15: addition 6, subtraction 4
+// 16: addition 7, subtraction 5
+// 28: addition 10, subtraction 6
+// 34: addition 7, subtraction 1
+//
+// Special rule:
+// 10: addition family 10, subtraction family 1
+//
+// 0 and 00 are separate roulette outcomes.
+// They are not assigned digit families.
+
+function family(n){
+ if(isZero(n))return null;
+
+ const x=Number(n);
+ const a=Math.floor(x/10);
+ const b=x%10;
+
+ return {
+  add:x===10?10:a+b,
+  sub:Math.abs(a-b)
+ };
+}
+
+function familyOptions(n){
+ const f=family(n);
+ return f?[...new Set([f.add,f.sub])]:[];
+}
+
+function familyMembers(f){
+ return NUMBERS.filter(n=>familyOptions(n).includes(f));
+}
+
+function currentSession(){
+ return spins.slice(currentStart);
+}
+
+function familyStream(history,operation){
+ return history.map(n=>{
+  const f=family(n);
+  return f?f[operation]:null;
+ });
+}
+
+// A pattern assignment can mix addition and subtraction.
+// Each number is allowed to belong to more than one family.
+// The scanner never changes the recorded roulette result.
+
+const TEMPLATES=[
+ {name:"Double Loop",code:"ABAB",groups:[0,1,0,1]},
+ {name:"Return Loop",code:"ABBA",groups:[0,1,1,0]},
+ {name:"Triple Family",code:"AAA",groups:[0,0,0]},
+ {name:"Alternating Three",code:"ABA",groups:[0,1,0]},
+ {name:"Paired Families",code:"AABB",groups:[0,0,1,1]},
+ {name:"Three-Family Cycle",code:"ABCABC",groups:[0,1,2,0,1,2]}
+];
+
+function matchTemplate(numbers,template){
+ if(numbers.length!==template.groups.length)return [];
+
+ const options=numbers.map(familyOptions);
+
+ if(options.some(x=>!x.length))return [];
+
+ const groups=[...new Set(template.groups)];
+ const answers=[];
+ const assignment={};
+
+ function search(index,used){
+  if(index===groups.length){
+   const sequence=template.groups.map(g=>assignment[g]);
+
+   if(sequence.every((v,i)=>options[i].includes(v))){
+    answers.push(sequence);
    }
-   for(const f of choices){
-    if(used.has(f))continue;
-    visit(index+1,new Set([...used,f]),{...assignment,[distinct[index]]:f});
-   }
+   return;
   }
-  visit(0,new Set(),{});
-  if(assignments.length){
-   const unique=[...new Set(assignments.map(a=>a.join(" → ")))];
-   found.push({
-    name:t.name,
-    spins:window,
-    assignments:unique.slice(0,4),
-    total:unique.length
+
+  const group=groups[index];
+
+  const positions=template.groups
+   .map((g,i)=>g===group?i:-1)
+   .filter(i=>i>=0);
+
+  let possible=[...options[positions[0]]];
+
+  for(const pos of positions.slice(1)){
+   possible=possible.filter(v=>options[pos].includes(v));
+  }
+
+  for(const value of possible){
+   if(used.has(value))continue;
+
+   assignment[group]=value;
+   used.add(value);
+
+   search(index+1,used);
+
+   used.delete(value);
+   delete assignment[group];
+  }
+ }
+
+ search(0,new Set());
+
+ const unique=new Map();
+
+ for(const sequence of answers){
+  unique.set(sequence.join(","),sequence);
+ }
+
+ return [...unique.values()];
+}
+
+function detectRecent(history,code){
+ const t=TEMPLATES.find(x=>x.code===code);
+ if(!t||history.length<t.groups.length)return [];
+
+ const window=history.slice(-t.groups.length);
+ return matchTemplate(window,t);
+}
+
+function detectAllRecent(history){
+ const result=[];
+
+ for(const t of TEMPLATES){
+  const matches=detectRecent(history,t.code);
+
+  if(matches.length){
+   result.push({
+    ...t,
+    spins:history.slice(-t.groups.length),
+    matches
    });
   }
  }
- return found;
+
+ return result;
 }
 
-function familyTransitionStats(history){
- const stats=new Map();
- for(let i=1;i<history.length;i++){
-  const from=families(history[i-1]),to=families(history[i]);
-  for(const a of from){
-   if(!stats.has(a))stats.set(a,{opportunities:0,to:new Map()});
-   const s=stats.get(a);
-   s.opportunities++;
-   for(const b of to)s.to.set(b,(s.to.get(b)||0)+1);
+// Find family transitions using earlier spins in the
+// current session. The latest spin is excluded from
+// its own forward-transition history.
+
+function transitions(history,lookback=160){
+ const rows=new Map();
+ const recent=history.slice(-lookback);
+
+ for(let i=1;i<recent.length;i++){
+  const before=familyOptions(recent[i-1]);
+  const after=familyOptions(recent[i]);
+
+  for(const a of before){
+   if(!rows.has(a)){
+    rows.set(a,{total:0,targets:new Map()});
+   }
+
+   const row=rows.get(a);
+   row.total++;
+
+   for(const b of after){
+    row.targets.set(b,(row.targets.get(b)||0)+1);
+   }
   }
  }
- return stats;
+
+ return rows;
 }
 
-function scan(history){
- if(history.length<2)return null;
- const a=history.at(-2),b=history.at(-1);
- const scores=new Map(NUMS.map(n=>[n,0]));
- const reasons=new Map(NUMS.map(n=>[n,[]]));
+function numberArithmetic(a,b){
+ if(isZero(a)||isZero(b))return [];
 
- const add=(n,weight,reason)=>{
-  if(!valid(n)||weight<=0)return;
-  scores.set(n,scores.get(n)+weight);
+ const x=Number(a),y=Number(b);
+
+ const results=[
+  {name:"Addition",value:x+y,expression:`${x}+${y}`},
+  {name:"Subtraction",value:Math.abs(x-y),expression:`|${x}-${y}|`},
+  {name:"Multiplication",value:x*y,expression:`${x}×${y}`}
+ ];
+
+ if(y!==0){
+  results.push({
+   name:"Division",value:x/y,expression:`${x}÷${y}`
+  });
+ }
+
+ if(x!==0){
+  results.push({
+   name:"Reverse division",value:y/x,expression:`${y}÷${x}`
+  });
+ }
+
+ return results.filter(r=>
+  Number.isInteger(r.value)&&r.value>=1&&r.value<=36
+ );
+}
+
+// Fast, bounded research ranking.
+// The scores are not probabilities.
+
+function rankCandidates(history){
+ if(history.length<2)return [];
+
+ const scores=new Map();
+ const reasons=new Map();
+
+ function add(n,points,reason){
+  n=String(n);
+
+  if(!isValid(n)||points<=0)return;
+
+  scores.set(n,(scores.get(n)||0)+points);
+
+  if(!reasons.has(n))reasons.set(n,[]);
+
   reasons.get(n).push(reason);
- };
-
- const recent=history.slice(-24),mathCounts={};
- for(let i=2;i<recent.length;i++){
-  for(const name of new Set(
-   mathMatches(recent[i-2],recent[i-1],recent[i]).map(x=>x.name)
-  )){
-   mathCounts[name]=(mathCounts[name]||0)+1;
-  }
  }
 
- for(const op of operations(a,b)){
-  const support=mathCounts[op.name]||0;
-  add(String(op.n),1+Math.min(1.5,support*.3),
-   `${op.expression}=${op.n}${support?` (${support} earlier matches)`:""}`);
- }
+ const last=history.at(-1);
+ const previous=history.at(-2);
 
- if(!zero(a)&&!zero(b)){
-  const step=Number(b)-Number(a);
-  const next=Number(b)+step;
-  if(next>=1&&next<=36)
-   add(String(next),1.1,`Continue difference ${step}`);
+ const stats=transitions(history.slice(0,-1),160);
 
-  if(history.length>=4&&!zero(history.at(-4))&&!zero(history.at(-3))){
-   const previous=Number(history.at(-3))-Number(history.at(-4));
-   const alt=Number(b)+previous;
-   if(alt>=1&&alt<=36)
-    add(String(alt),.9,`Alternating difference ${previous}`);
-  }
- }
+ for(const f of familyOptions(last)){
+  const row=stats.get(f);
 
- const transitions=familyTransitionStats(history);
- for(const f of families(b)){
-  const row=transitions.get(f);
-  if(!row)continue;
-  for(const [nextFamily,count] of row.to){
-   const target=members(nextFamily);
-   if(!target.length)continue;
-   const contribution=Math.min(1.8,1.6*count/row.opportunities)/target.length;
-   for(const n of target){
-    add(n,contribution,
-     `Family ${f} → ${nextFamily}: ${count}/${row.opportunities} historical opportunities`);
+  if(!row||row.total<2)continue;
+
+  for(const [next,count] of row.targets){
+   const members=familyMembers(next);
+
+   if(!members.length)continue;
+
+   const weight=Math.min(2,count/row.total*2);
+
+   for(const n of members){
+    add(n,weight/members.length,
+     `Family ${f} previously followed by ${next}`);
    }
   }
  }
 
- const templates=familyPatterns(history);
- for(const p of templates){
-  if(p.name==="ABAB"||p.name==="AABB"){
-   const target=new Set();
-   for(const sequence of p.assignments){
-    const labels=sequence.split(" → ");
-    if(p.name==="ABAB")target.add(Number(labels[0]));
-    else target.add(Number(labels[2]));
-   }
-   for(const f of target){
-    const m=members(f);
-    for(const n of m)
-     add(n,.5/m.length,`${p.name} family continuation hypothesis`);
-   }
+ // Arithmetic continuations
+ for(const op of numberArithmetic(previous,last)){
+  add(op.value,.5,`${op.expression}=${op.value}`);
+ }
+
+ // Alternating family loops: ABAB may suggest A next,
+ // but only as an unvalidated continuation hypothesis.
+ const double=detectRecent(history,"ABAB");
+
+ for(const sequence of double){
+  const nextFamily=sequence[0];
+  const members=familyMembers(nextFamily);
+
+  for(const n of members){
+   add(n,.4/members.length,
+    `Possible Double Loop continuation: family ${nextFamily}`);
   }
  }
 
- for(let i=1;i<history.length;i++){
-  if(history[i-1]===b)
-   add(history[i],.4,`Previously followed ${b}`);
+ // ABA can be extended to ABAB.
+ const alternating=detectRecent(history,"ABA");
+
+ for(const sequence of alternating){
+  const nextFamily=sequence[1];
+  const members=familyMembers(nextFamily);
+
+  for(const n of members){
+   add(n,.4/members.length,
+    `Possible alternating continuation: family ${nextFamily}`);
+  }
  }
 
- for(const n of NUMS){
-  if(wheelDistance(n,b)<=2)
-   add(n,.08,`Wheel neighbor of ${b}`);
+ // ABBA may be followed by A or B, but neither is
+ // assumed without evidence. No forced continuation.
+
+ // Previous direct number followers.
+ const recent=history.slice(-120);
+
+ for(let i=1;i<recent.length;i++){
+  if(recent[i-1]===last){
+   add(recent[i],.15,`Previously followed ${last}`);
+  }
  }
 
- const ranking=[...scores]
-  .map(([n,score])=>({n,score,reasons:reasons.get(n)}))
-  .filter(x=>x.score>0)
-  .sort((x,y)=>y.score-x.score||NUMS.indexOf(x.n)-NUMS.indexOf(y.n));
-
- return {ranking,mathCounts,templates,transitions};
+ return [...scores].map(([n,score])=>({
+  n,score,reasons:reasons.get(n)||[]
+ })).sort((a,b)=>b.score-a.score||
+  NUMBERS.indexOf(a.n)-NUMBERS.indexOf(b.n)
+ );
 }
 
 function predict(history){
- const r=scan(history);
- return r?r.ranking.slice(0,5).map(x=>x.n):null;
+ return rankCandidates(history).slice(0,5).map(x=>x.n);
 }
 
-function rebuild(){
+function appendSpin(n,source="live",draw=true){
+ n=String(n);
+
+ if(!isValid(n))return;
+
+ const history=currentSession();
+ const picks=predict(history);
+
+ receipts.push({
+  actual:n,
+  picks,
+  source,
+  time:new Date().toISOString()
+ });
+
+ spins.push(n);
+ save();
+
+ if(draw)render();
+}
+
+function rebuildReceipts(){
  receipts=[];
+
+ let sessionIndex=0;
+ let start=0;
+
  for(let i=0;i<spins.length;i++){
-  receipts.push({
-   before:predict(spins.slice(0,i)),
-   actual:spins[i],
-   source:"historical-rebuild"
-  });
- }
-}
-
-function load(){
- try{
-  let d=JSON.parse(localStorage.getItem(KEY)||"null");
-  if(!d){
-   for(const key of OLD){
-    const candidate=JSON.parse(localStorage.getItem(key)||"null");
-    if(candidate&&Array.isArray(candidate.spins)){
-     d=candidate;
-     break;
-    }
-   }
+  while(sessionIndex<sessions.length&&
+        i>=sessions[sessionIndex].end){
+   start=sessions[sessionIndex].end;
+   sessionIndex++;
   }
-  if(d&&Array.isArray(d.spins)&&d.spins.every(valid))
-   spins=d.spins.map(String);
 
-  if(d&&Array.isArray(d.receipts)&&d.receipts.length===spins.length)
-   receipts=d.receipts;
-  else rebuild();
+  const picks=predict(spins.slice(start,i));
 
-  save();
- }catch(e){
-  console.warn("Unable to restore history",e);
+  receipts.push({
+   actual:spins[i],
+   picks,
+   source:"historical",
+   time:null
+  });
  }
 }
 
 function save(){
  try{
-  localStorage.setItem(KEY,JSON.stringify({spins,receipts}));
-  saveFailed=false;
-  return true;
+  localStorage.setItem(KEY,JSON.stringify({
+   version:5,
+   spins,
+   sessions,
+   receipts,
+   currentStart
+  }));
+
+  storageError=false;
  }catch(e){
-  saveFailed=true;
-  $("connection").textContent="SAVE ERROR — Export a backup before closing";
-  return false;
+  storageError=true;
+  $("status").textContent=
+   "SAVE FAILED — Export a backup before leaving.";
  }
 }
 
-function addSpin(n,refresh=true,source="live"){
- if(!valid(n))return;
- const before=predict(spins);
- spins.push(n);
- receipts.push({before,actual:n,source});
- save();
- if(refresh)render();
+function load(){
+ try{
+  let data=JSON.parse(localStorage.getItem(KEY)||"null");
+  let migrated=false;
+
+  if(!data){
+   for(const key of PREVIOUS){
+    const old=JSON.parse(localStorage.getItem(key)||"null");
+
+    if(old&&Array.isArray(old.spins)){
+     data=old;
+     migrated=true;
+     break;
+    }
+   }
+  }
+
+  if(!data)return;
+
+  if(Array.isArray(data.spins)){
+   spins=data.spins.map(String).filter(isValid);
+  }
+
+  if(!migrated&&Array.isArray(data.sessions)){
+   sessions=data.sessions.filter(s=>
+    Number.isInteger(s.start)&&
+    Number.isInteger(s.end)&&
+    s.start>=0&&s.end<=spins.length&&
+    s.end>s.start
+   );
+  }
+
+  currentStart=(!migrated&&
+   Number.isInteger(data.currentStart)&&
+   data.currentStart>=0&&
+   data.currentStart<=spins.length)
+   ?data.currentStart:0;
+
+  if(!migrated&&Array.isArray(data.receipts)&&
+     data.receipts.length===spins.length){
+   receipts=data.receipts;
+  }else{
+   rebuildReceipts();
+  }
+
+  save();
+ }catch(e){
+  console.warn("History recovery error",e);
+  $("status").textContent=
+   "Could not restore saved history. Check your backup.";
+ }
 }
 
 function undo(){
  if(!spins.length)return;
+
+ if(spins.length<=currentStart){
+  alert("Current session is empty.");
+  return;
+ }
+
  spins.pop();
  receipts.pop();
  save();
  render();
 }
 
-function clearAll(){
- if(!confirm("Delete all saved spins and receipts? Export a backup first."))return;
+function clearSpins(){
+ if(!confirm(
+  "Delete all saved spins, sessions and receipts? Export a backup first."
+ ))return;
+
  spins=[];
  receipts=[];
+ sessions=[];
+ currentStart=0;
+ save();
+ render();
+}
+
+function endSession(){
+ if(spins.length===currentStart){
+  alert("No spins in the current session.");
+  return;
+ }
+
+ sessions.push({
+  start:currentStart,
+  end:spins.length,
+  ended:new Date().toISOString()
+ });
+
+ currentStart=spins.length;
+
  save();
  render();
 }
 
 function importSpins(){
  const raw=$("bulk").value.trim();
+
  if(!raw)return;
- const items=raw.split(/[\s,;]+/).filter(Boolean);
- if(items.some(n=>!valid(n))){
-  alert("Invalid entry: use 0, 00, or 1–36.");
+
+ const values=raw.split(/[\s,;]+/).filter(Boolean);
+
+ if(values.some(x=>!isValid(x))){
+  alert("Invalid number. Use 0, 00, or 1 through 36.");
   return;
  }
- for(const n of items)addSpin(n,false,"practice");
+
+ for(const n of values){
+  appendSpin(n,"practice",false);
+ }
+
  $("bulk").value="";
  render();
 }
 
 function exportBackup(){
- const data={exported:new Date().toISOString(),version:4,spins,receipts};
- const url=URL.createObjectURL(new Blob(
-  [JSON.stringify(data,null,2)],{type:"application/json"}
- ));
+ const data={
+  version:5,
+  exported:new Date().toISOString(),
+  spins,sessions,receipts,currentStart
+ };
+
+ const blob=new Blob(
+  [JSON.stringify(data,null,2)],
+  {type:"application/json"}
+ );
+
+ const url=URL.createObjectURL(blob);
  const a=document.createElement("a");
+
  a.href=url;
- a.download="docs-roulette-family-backup.json";
+ a.download="docs-roulette-backup.json";
+ document.body.appendChild(a);
  a.click();
+ a.remove();
+
  setTimeout(()=>URL.revokeObjectURL(url),1000);
 }
 
-function categories(n){
- const ids=["highlow","color","dozen","tableRow","zero","sector"];
- if(!n){
-  ids.forEach(id=>$(id).textContent="—");
+function renderStream(){
+ const history=currentSession().slice(-10);
+
+ if(!history.length){
+  $("streams").innerHTML="<p>No current-session spins.</p>";
   return;
  }
- const x=Number(n);
- $("highlow").textContent=zero(n)?"Zero":x<=18?"1–18":"19–36";
- $("color").textContent=color(n).toUpperCase();
- $("dozen").textContent=zero(n)?"Zero":x<=12?"1st":x<=24?"2nd":"3rd";
- $("tableRow").textContent=zero(n)?"Zero":x%3===0?"Top":x%3===2?"Middle":"Bottom";
- $("zero").textContent=zero(n)?n:"Neither";
- $("sector").textContent=wheelFamily(n).join(", ");
+
+ const addition=familyStream(history,"add");
+ const subtraction=familyStream(history,"sub");
+
+ $("streams").innerHTML=`
+ <div class="rule">
+ <strong>Actual Numbers</strong>
+ <p>${history.join(" → ")}</p>
+ </div>
+ <div class="rule">
+ <strong>Addition Families</strong>
+ <p>${addition.map(x=>x??"—").join(" → ")}</p>
+ </div>
+ <div class="rule">
+ <strong>Subtraction Families</strong>
+ <p>${subtraction.map(x=>x??"—").join(" → ")}</p>
+ </div>
+ <p class="small">
+ Mixed-operation loops are checked separately.
+ </p>`;
 }
 
-function renderPatterns(r){
- const found=r?.templates||[];
+function renderLoopSection(id,patterns,code){
+ const found=patterns.filter(p=>p.code===code);
 
- const latest=spins.slice(-8);
- const additions=latest.map(n=>familyViews(n)?.addition??"—");
- const subtractions=latest.map(n=>familyViews(n)?.subtraction??"—");
-
- let html="";
- if(latest.length){
-  html+=`<div class="rule">
-   <strong>Both Family Directions</strong>
-   <p>Numbers: ${latest.join(" → ")}</p>
-   <p>Addition: ${additions.join(" → ")}</p>
-   <p>Subtraction: ${subtractions.join(" → ")}</p>
-   </div>`;
+ if(!found.length){
+  $(id).innerHTML="<p>No matching loop at the end of this session.</p>";
+  return;
  }
 
- html+=found.length?found.map(p=>`
+ $(id).innerHTML=found.map(p=>`
   <div class="rule">
-  <strong>${p.name}: ${p.assignments[0]}</strong>
-  <p>Spins: ${p.spins.join(" → ")}</p>
-  <p class="small">${p.total>1?`${p.total} valid family interpretations. `:""}
-  Descriptive pattern; not evidence of next-spin dependence.</p>
+   <strong>${p.name} (${p.code})</strong>
+   <p>Spins: ${p.spins.join(" → ")}</p>
+   <p class="good">
+    ${p.matches.slice(0,4).map(x=>x.join(" → ")).join("<br>")}
+   </p>
+   <small>${p.matches.length} valid family assignment(s)</small>
   </div>
- `).join(""):"<p>No matching family template in the latest window.</p>";
+ `).join("");
+}
 
- $("familyPatterns").innerHTML=html;
+function renderOther(patterns){
+ const found=patterns.filter(p=>
+  !["ABAB","ABBA"].includes(p.code)
+ );
 
- const recent=spins.slice(-9),foundMath=[];
- for(let i=2;i<recent.length;i++){
-  const m=mathMatches(recent[i-2],recent[i-1],recent[i]);
-  if(m.length){
-   foundMath.push(
-    `${recent[i-2]} → ${recent[i-1]} → ${recent[i]}: ${m.map(x=>x.expression).join(" or ")}`
-   );
+ $("otherLoops").innerHTML=found.length?
+  found.map(p=>`
+   <div class="rule">
+   <strong>${p.name} (${p.code})</strong>
+   <p>${p.matches.slice(0,3)
+    .map(x=>x.join(" → ")).join(" | ")}</p>
+   </div>
+  `).join(""):
+  "<p>No additional family template at the end of this session.</p>";
+}
+
+function renderFrequency(){
+ const history=currentSession();
+ const windows=[10,20,50];
+ let html="";
+
+ for(const size of windows){
+  const recent=history.slice(-size);
+  const counts=new Map();
+
+  for(const n of recent){
+   for(const f of familyOptions(n)){
+    counts.set(f,(counts.get(f)||0)+1);
+   }
   }
- }
- $("mathPatterns").innerHTML=foundMath.length?
-  foundMath.slice(-6).reverse().map(s=>`<div class="rule">${s}</div>`).join(""):
-  "<p>No exact arithmetic triple in the last nine spins.</p>";
-}
 
-function renderTransitions(r){
- if(!r||!spins.length){
-  $("transitions").innerHTML="<p>Waiting for numbers.</p>";
-  return;
- }
+  const sorted=[...counts].sort((a,b)=>b[1]-a[1]||a[0]-b[0]);
 
- const current=families(spins.at(-1));
- $("transitions").innerHTML=current.length?current.map(f=>{
-  const stat=r.transitions.get(f);
-  if(!stat)
-   return `<div class="rule">Family ${f}: no observed transitions</div>`;
-
-  const targets=[...stat.to].sort((a,b)=>b[1]-a[1]).slice(0,4);
-  return `<div class="rule">
-   <strong>Current family ${f}</strong>
-   <p>${targets.map(([g,c])=>`${g}: ${c}/${stat.opportunities}`).join(" • ")||"No observations"}</p>
-   <p class="small">Families overlap; these counts are not mutually exclusive.</p>
+  html+=`<div class="rule">
+   <strong>Last ${Math.min(size,recent.length)} Spins</strong>
+   <div class="chips">
+   ${sorted.slice(0,7).map(([f,c])=>
+    `<span class="tag">Family ${f}: ${c}</span>`
+   ).join("")||"No data"}
+   </div>
    </div>`;
- }).join(""):"<p>0 and 00 are separate outcomes, not digit families.</p>";
+ }
+
+ $("frequency").innerHTML=html+
+ `<p class="small">
+ A spin can count toward two families.
+ Frequent families are not necessarily more likely next.
+ </p>`;
 }
 
-function renderPersistence(r){
- const rows=Object.entries(r?.mathCounts||{}).sort((a,b)=>b[1]-a[1]);
- $("persistence").innerHTML=rows.length?
-  rows.slice(0,6).map(([n,c])=>
-   `<div class="row"><span>${n}</span><b>${c} matches</b></div>`
-  ).join("")+
-  `<p class="small">Matches remain counted after interruptions; this is not a proven persistence signal.</p>`:
-  "<p>No repeating arithmetic rule yet.</p>";
-}
+function renderResearch(history){
+ const ranking=rankCandidates(history);
 
-function renderAccuracy(){
- const graded=receipts.filter(r=>r.before?.length);
- const trials=graded.length;
- const hits=graded.filter(r=>r.before[0]===r.actual).length;
- const top=graded.filter(r=>r.before.includes(r.actual)).length;
-
- $("trials").textContent=trials;
- $("hits").textContent=hits;
- $("hitRate").textContent=trials?(100*hits/trials).toFixed(1)+"%":"—";
- $("top5Rate").textContent=trials?(100*top/trials).toFixed(1)+"%":"—";
-
- $("receipts").innerHTML=receipts.slice(-100).reverse().map((r,i)=>{
-  const outcome=!r.before?.length?"Warmup":
-   r.before[0]===r.actual?"Exact":
-   r.before.includes(r.actual)?"Top 5":"Miss";
-
-  return `<tr>
-   <td>${receipts.length-i}</td>
-   <td>${r.before?.[0]||"—"}</td>
-   <td>${chip(r.actual)}</td>
-   <td>${outcome}</td>
-   </tr>`;
- }).join("");
-}
-
-function render(){
- $("count").textContent=`(${spins.length})`;
- $("undo").disabled=!spins.length;
- $("history").innerHTML=spins.length?
-  spins.slice(-100).reverse().map(chip).join(""):
-  "<p>No spins entered.</p>";
-
- const r=scan(spins),ranking=r?.ranking||[],top=ranking[0];
-
- $("topNumber").textContent=top?.n||"—";
- $("topReason").textContent=top?
-  top.reasons.slice(0,3).join(" • "):
-  "Enter at least two spins.";
-
- $("candidates").innerHTML=ranking.slice(0,5).map((x,i)=>`
-  <div class="row">
-  <span>${i+1}. ${chip(x.n)}</span>
-  <b>${x.score.toFixed(2)}</b>
-  </div>
-  <p class="small">${x.reasons.slice(0,2).join("; ")}</p>
- `).join("")||"<p>Waiting for data.</p>";
+ $("candidates").innerHTML=ranking.length?
+  ranking.slice(0,5).map((x,i)=>`
+   <div class="row">
+   <span>${i+1}. ${chip(x.n)}</span>
+   <strong>${x.score.toFixed(2)}</strong>
+   </div>
+   <p class="small">${escapeHTML(x.reasons.slice(0,2).join("; "))}</p>
+  `).join(""):
+  "<p>Enter at least two spins to generate research candidates.</p>";
 
  const familyScores=new Map();
+
  for(const x of ranking){
-  for(const f of families(x.n)){
+  for(const f of familyOptions(x.n)){
    familyScores.set(f,(familyScores.get(f)||0)+x.score);
   }
  }
 
- const fs=[...familyScores].sort((a,b)=>b[1]-a[1]).slice(0,5);
- $("familyCandidates").innerHTML=fs.length?
-  fs.map(([f,s])=>`
-   <div class="row"><span>Family ${f}</span><b>${s.toFixed(2)}</b></div>
-   <p class="small">${members(f).join(", ")}</p>
-  `).join(""):
-  "<p>Waiting for data.</p>";
+ const topFamilies=[...familyScores]
+  .sort((a,b)=>b[1]-a[1])
+  .slice(0,5);
 
- categories(top?.n);
- renderPatterns(r);
- renderTransitions(r);
- renderPersistence(r);
- renderAccuracy();
+ $("familyResearch").innerHTML=topFamilies.length?
+  topFamilies.map(([f,score])=>`
+   <div class="rule">
+   <div class="row">
+   <strong>Family ${f}</strong>
+   <span>${score.toFixed(2)} research points</span>
+   </div>
+   <p>${familyMembers(f).join(", ")}</p>
+   </div>
+  `).join(""):
+  "<p>Waiting for current-session history.</p>";
 }
 
-function buildWheel(){
- for(const n of NUMS){
-  const b=document.createElement("button");
-  b.className="num "+color(n);
-  b.textContent=n;
-  b.setAttribute("aria-label","Record "+n);
-  b.onclick=()=>addSpin(n);
-  $("wheel").appendChild(b);
+function renderReturns(history){
+ const recent=history.slice(-70);
+ const records=[];
+
+ // Look for a family occurring, disappearing for
+ // one or two spins, then returning.
+ for(let gap=1;gap<=2;gap++){
+  for(let i=0;i+gap+1<recent.length;i++){
+   const left=familyOptions(recent[i]);
+   const right=familyOptions(recent[i+gap+1]);
+
+   for(const f of left){
+    if(!right.includes(f))continue;
+
+    const middle=recent.slice(i+1,i+gap+1);
+
+    if(middle.some(n=>familyOptions(n).includes(f)))continue;
+
+    records.push({
+     family:f,
+     gap,
+     sequence:recent.slice(i,i+gap+2)
+    });
+   }
+  }
+ }
+
+ $("returns").innerHTML=records.length?
+  records.slice(-5).reverse().map(r=>`
+   <div class="rule">
+   <strong>Family ${r.family} returned</strong>
+   <p>${r.sequence.join(" → ")}</p>
+   <small>${r.gap} intervening spin(s)</small>
+   </div>
+  `).join(""):
+  "<p>No one-spin or two-spin family returns in the recent window.</p>";
+}
+
+function renderArithmetic(history){
+ const recent=history.slice(-12);
+ const matches=[];
+
+ for(let i=2;i<recent.length;i++){
+  const ops=numberArithmetic(recent[i-2],recent[i-1])
+   .filter(x=>String(x.value)===recent[i]);
+
+  if(ops.length){
+   matches.push({
+    numbers:recent.slice(i-2,i+1),
+    operations:ops
+   });
+  }
+ }
+
+ $("arithmetic").innerHTML=matches.length?
+  matches.slice(-5).reverse().map(x=>`
+   <div class="rule">
+   <strong>${x.numbers.join(" → ")}</strong>
+   <p>${x.operations.map(o=>
+    `${o.name}: ${o.expression}=${o.value}`
+   ).join(" | ")}</p>
+   </div>
+  `).join(""):
+  "<p>No exact arithmetic triple in the latest 12 spins.</p>";
+}
+
+function renderCategories(history){
+ const n=history.at(-1);
+
+ const ids=[
+  "highLow","latestColor","dozen",
+  "tableRow","neighbors","latest"
+ ];
+
+ if(!n){
+  ids.forEach(id=>$(id).textContent="—");
+  return;
+ }
+
+ const x=Number(n);
+
+ $("latest").textContent=n;
+ $("highLow").textContent=isZero(n)?
+  "Zero":x<=18?"1–18":"19–36";
+
+ $("latestColor").textContent=color(n).toUpperCase();
+
+ $("dozen").textContent=isZero(n)?
+  "Zero":x<=12?"1st":x<=24?"2nd":"3rd";
+
+ $("tableRow").textContent=isZero(n)?
+  "Zero":x%3===0?"Top":x%3===2?"Middle":"Bottom";
+
+ const index=WHEEL.indexOf(n);
+
+ $("neighbors").textContent=[
+  WHEEL[(index+36)%38],
+  WHEEL[(index+37)%38],
+  WHEEL[(index+1)%38],
+  WHEEL[(index+2)%38]
+ ].join(", ");
+}
+
+function renderReceipts(){
+ const graded=receipts.filter(r=>
+  Array.isArray(r.picks)&&r.picks.length>0
+ );
+
+ const exact=graded.filter(r=>
+  r.picks[0]===r.actual
+ ).length;
+
+ const topFive=graded.filter(r=>
+  r.picks.includes(r.actual)
+ ).length;
+
+ $("graded").textContent=graded.length;
+ $("exactHits").textContent=exact;
+
+ $("exactRate").textContent=graded.length?
+  (100*exact/graded.length).toFixed(1)+"%":"—";
+
+ $("topFiveRate").textContent=graded.length?
+  (100*topFive/graded.length).toFixed(1)+"%":"—";
+
+ $("receipts").innerHTML=receipts.slice(-60).reverse()
+  .map(r=>{
+   const picks=Array.isArray(r.picks)?r.picks:[];
+
+   const outcome=!picks.length?"Warmup":
+    picks[0]===r.actual?"Exact":
+    picks.includes(r.actual)?"Top 5":"Miss";
+
+   return `<tr>
+    <td>${chip(r.actual)}</td>
+    <td>${picks[0]||"—"}</td>
+    <td>${outcome}</td>
+    <td>${escapeHTML(r.source||"unknown")}</td>
+    </tr>`;
+  }).join("");
+}
+
+function renderSessions(){
+ const finished=sessions.map((s,i)=>({
+  name:`Session ${i+1}`,
+  count:s.end-s.start
+ }));
+
+ const active=spins.length-currentStart;
+
+ $("sessions").innerHTML=[
+  ...finished.map(s=>
+   `<div class="row"><span>${s.name}</span><b>${s.count} spins</b></div>`
+  ),
+  `<div class="row"><span>Current Session</span><b>${active} spins</b></div>`
+ ].join("");
+}
+
+function renderHeadline(history,patterns){
+ const double=patterns.find(p=>p.code==="ABAB");
+ const returned=patterns.find(p=>p.code==="ABBA");
+
+ if(double){
+  $("headline").textContent="DOUBLE LOOP";
+  $("headlineDetail").textContent=
+   double.matches[0].join(" → ")+
+   " | "+double.spins.join(" → ");
+  return;
+ }
+
+ if(returned){
+  $("headline").textContent="RETURN LOOP";
+  $("headlineDetail").textContent=
+   returned.matches[0].join(" → ")+
+   " | "+returned.spins.join(" → ");
+  return;
+ }
+
+ const other=patterns[0];
+
+ if(other){
+  $("headline").textContent=other.name.toUpperCase();
+  $("headlineDetail").textContent=
+   other.matches[0].join(" → ");
+  return;
+ }
+
+ if(history.length){
+  const n=history.at(-1);
+  const f=family(n);
+
+  $("headline").textContent="SCANNING FAMILIES";
+  $("headlineDetail").textContent=f?
+   `${n}: addition ${f.add}, subtraction ${f.sub}`:
+   `${n}: separate zero outcome`;
+  return;
+ }
+
+ $("headline").textContent="READY";
+ $("headlineDetail").textContent="Enter a spin to begin.";
+}
+
+function render(){
+ const start=performance.now();
+ const history=currentSession();
+ const patterns=detectAllRecent(history);
+
+ $("spinCount").textContent=`(${spins.length} total)`;
+
+ $("history").innerHTML=spins.length?
+  spins.slice(-90).reverse().map(chip).join(""):
+  "<p>No spins entered.</p>";
+
+ $("undo").disabled=spins.length<=currentStart;
+
+ renderHeadline(history,patterns);
+ renderStream();
+ renderLoopSection("doubleLoops",patterns,"ABAB");
+ renderLoopSection("returnLoops",patterns,"ABBA");
+ renderOther(patterns);
+ renderFrequency();
+ renderResearch(history);
+ renderReturns(history);
+ renderArithmetic(history);
+ renderCategories(history);
+ renderReceipts();
+ renderSessions();
+
+ const elapsed=performance.now()-start;
+
+ $("speed").textContent=elapsed.toFixed(1)+" ms";
+
+ if(!storageError){
+  $("status").textContent=navigator.onLine?
+   "ONLINE • Automatic analysis ready":
+   "OFFLINE • Local analysis ready";
  }
 }
 
-function connection(){
- if(!saveFailed){
-  $("connection").textContent=navigator.onLine?
-   "ONLINE — Local pattern analysis enabled":
-   "OFFLINE — Local pattern analysis enabled";
+function buildButtons(){
+ const container=$("numberButtons");
+
+ for(const n of NUMBERS){
+  const b=document.createElement("button");
+
+  b.className="num "+color(n);
+  b.textContent=n;
+  b.type="button";
+  b.setAttribute("aria-label","Record spin "+n);
+
+  b.onclick=()=>appendSpin(n);
+
+  container.appendChild(b);
  }
 }
 
 $("undo").onclick=undo;
-$("clear").onclick=clearAll;
 $("export").onclick=exportBackup;
+$("clear").onclick=clearSpins;
 $("import").onclick=importSpins;
+$("endSession").onclick=endSession;
 
-window.addEventListener("online",connection);
-window.addEventListener("offline",connection);
+window.addEventListener("online",render);
+window.addEventListener("offline",render);
 
 if("serviceWorker" in navigator){
- window.addEventListener("load",async()=>{
-  try{
-   await navigator.serviceWorker.register("./sw.js");
-   await navigator.serviceWorker.ready;
-  }catch(e){
-   console.warn("Offline caching not confirmed",e);
-  }
+ window.addEventListener("load",()=>{
+  navigator.serviceWorker.register("./sw.js")
+   .catch(e=>console.warn("Service worker registration failed",e));
  });
 }
 
-buildWheel();
+buildButtons();
 load();
-connection();
 render();
+
 </script>
 </body>
 </html>
